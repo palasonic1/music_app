@@ -37,6 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'index',
+    'profiles',
 ]
 
 MIDDLEWARE = [
@@ -54,7 +56,7 @@ ROOT_URLCONF = 'music_news_feed.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -75,11 +77,14 @@ WSGI_APPLICATION = 'music_news_feed.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.mysql',           # 'postgresql_psycopg2', 'postgresql', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': 'music_news_feed',             # Or path to database file if using sqlite3.
+        'USER': 'dbms',             # Not used with sqlite3.
+        'PASSWORD': 'DBMSpass123',         # Not used with sqlite3.
+        'HOST': 'localhost',             # Set to empty string for localhost. Not used with sqlite3.
+        #'PORT': '3298'             # Set to empty string for default. Not used with sqlite3.
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/2.1/ref/settings/#auth-password-validators
@@ -103,9 +108,9 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.1/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+TIME_ZONE = 'Europe/Moscow'
 
-TIME_ZONE = 'UTC'
+LANGUAGE_CODE = 'ru-ru'
 
 USE_I18N = True
 
@@ -118,3 +123,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.1/howto/static-files/
 
 STATIC_URL = '/static/'
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, "static"),
+]
+
+#LOGIN_REDIRECT_URL = '/'
+#LOGIN_URL = '/accounts/login'
+
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
+LOGIN_REDIRECT_URL = 'index'
