@@ -182,3 +182,19 @@ def add_artist_to_user(artist_spotify_id, user):
 
     Preferences.objects.update_or_create(person=user, artist=artist, defaults={'status': True})
 
+
+def delete_artist_from_user(artist_spotify_id, user):
+    artist = Artists.get_or_none(spotify_id=artist_spotify_id)
+    if artist is None:
+        return
+    try:
+        pref = Preferences.objects.get(person=user, artist=artist)
+        pref.status = False
+        pref.save()
+    except Preferences.DoesNotExist:
+        pass
+    for album in Albums.objects.filter(artists=artist):
+        try:
+            Updates.objects.filter(person=user, album=album).delete()
+        except Exception:
+            pass
