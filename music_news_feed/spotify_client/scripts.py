@@ -258,7 +258,7 @@ def tracks_of_album(album_spotify_id):
         'genres': json.loads(album.genres),
         'img_url': album.img_url,
         'release_date': album.release_date.strftime('%Y-%m-%d'),
-        'artists': list(album.artists),
+        'artists': list(album.artists.values('name')),
         'tracks': list(
             Tracks.objects.filter(album=album).values('name', 'artists', 'track_number', 'disc_number', 'duration_ms')
         )

@@ -20,3 +20,11 @@ def feed(r):
     albums = scripts.feed_of_user(r.user)
     return render(r, 'albums/feed.html', {'feed': albums})
 
+
+def tracks_of_album(r):
+    form = {
+        'album': r.GET.get('album', ''),
+    }
+    album = scripts.tracks_of_album(form['album'])
+    return render(r, 'albums/album.html', {'album': album})
+
