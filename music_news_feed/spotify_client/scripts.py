@@ -222,19 +222,28 @@ def preferences_of_user(user):
 
 
 def feed_of_user(user):
-    albums = Updates.objects.filter(person=user)
-
-
-def feed_of_user(user):
-    albums = Updates.objects.filter(person=user).order_by('-album__release_date').values(
-        'status',
-        'album__name',
-        'album__genres',
-        'album__spotify_id',
-        'album__img_url',
-        'album__release_date',
-        'album__artists__name'
-    )
-
-    print(albums)
-
+    try:
+        albums = Updates.objects.filter(person=user).order_by('-album__release_date').values(
+            'status',
+            'album__name',
+            'album__genres',
+            'album__spotify_id',
+            'album__img_url',
+            'album__release_date',
+            'album__artists__name'
+        )
+    except Exception as ex:
+        print(ex)
+        return []
+    answer = []
+    for album in albums:
+        answer.append({
+            'status': album['status'],
+            'name': album['album__name'],
+            'genres': json.loads(album['album__genres']),
+            'spotify_id': album['album__spotify_id'],
+            'img_url': album['album__img_url'],
+            'release_date': album['album__release_date'],
+            'artists_name': album['album__artists__name']
+        })
+    return answer
