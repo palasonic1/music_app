@@ -2,7 +2,7 @@
 
 {% block content %}
   <h1>Избранные исполнители</h1>
-  <table id="search_artist_table" class="table table-hover" style="margin-top: 20px;">
+  <table id="favorite_artist_table" class="table table-hover" style="margin-top: 20px;">
       <thead>
           <colgroup>
               <col style="width:12%;" />
@@ -32,7 +32,7 @@
                      {{ artist.genres|join:", " }}
                  </td>
                  <td>
-                     <a href="{% url 'artists:search_artists' %}?artist_name={{ form.artist_name }}&rm_artist={{ artist.spotify_id }}">удалить</a>
+                     <a href="{% url 'artists:favorite_artists' %}?artist_name={{ form.artist_name }}&rm_artist={{ artist.spotify_id }}">удалить</a>
                  </td>
               </tr>
            {% endfor %}

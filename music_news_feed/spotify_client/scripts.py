@@ -223,3 +223,18 @@ def preferences_of_user(user):
 
 def feed_of_user(user):
     albums = Updates.objects.filter(person=user)
+
+
+def feed_of_user(user):
+    albums = Updates.objects.filter(person=user).order_by('-album__release_date').values(
+        'status',
+        'album__name',
+        'album__genres',
+        'album__spotify_id',
+        'album__img_url',
+        'album__release_date',
+        'album__artists__name'
+    )
+
+    print(albums)
+

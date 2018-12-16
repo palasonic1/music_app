@@ -41,7 +41,6 @@ def favorite_artists(r):
         return redirect(reverse('artists:favorite_artists'))
 
     fav_artists = scripts.preferences_of_user(r.user)
-    print(fav_artists)
 
     return render(r, 'artists/favorite_artists.html', {'favorite_artists': fav_artists})
 
