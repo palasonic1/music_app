@@ -243,7 +243,32 @@ def feed_of_user(user):
             'genres': json.loads(album['album__genres']),
             'spotify_id': album['album__spotify_id'],
             'img_url': album['album__img_url'],
-            'release_date': album['album__release_date'],
+            'release_date': album['album__release_date'].strftime('%Y-%m-%d'),
             'artists_name': album['album__artists__name']
         })
     return answer
+
+
+def tracks_of_album(album_spotify_id):
+    album = Albums.get_or_none(spotify_id=album_spotify_id)
+    if album is None:
+        return []
+    return {
+        'name': album.name,
+        'genres': json.loads(album.genres),
+        'img_url': album.img_url,
+        'release_date': album.release_date.strftime('%Y-%m-%d'),
+        'artists': list(album.artists),
+        'tracks': list(
+            Tracks.objects.filter(album=album).values('name', 'artists', 'track_number', 'disc_number', 'duration_ms')
+        )
+    }
+
+
+def change_updates_status(album_spotify_id, user):
+    try:
+        update = Updates.objects.get(person=user, album__spotify_id=album_spotify_id)
+        update.status = not update.status
+        update.save()
+    except Exception as ex:
+        print(ex)
