@@ -202,6 +202,24 @@ def delete_artist_from_user(artist_spotify_id, user):
 
 def preferences_of_user(user):
     try:
-        return Preferences.objects.filter(person=user, status=True).values('artist__name', 'artist__img_url', 'artist__spotify_id', 'artist__genres')
+        artists = Preferences.objects.filter(person=user, status=True).values(
+            'artist__name',
+            'artist__img_url',
+            'artist__spotify_id',
+            'artist__genres'
+        )
+        answer = []
+        for artist in artists:
+            answer.append({
+                'name': artist['artist__name'],
+                'img_url': artist['artist__img_url'],
+                'spotify_id': artist['artist__spotify_id'],
+                'genres': json.loads(artist['artist__genres'])
+            })
+        return answer
     except Exception:
         return []
+
+
+def feed_of_user(user):
+    albums = Updates.objects.filter(person=user)
