@@ -20,16 +20,3 @@ def feed(r):
     albums = scripts.feed_of_user(r.user)
     return render(r, 'albums/feed.html', {'feed': albums})
 
-
-def favorite_artists(r):
-    form = {
-        'rm_artist': r.GET.get('rm_artist', ''),
-    }
-
-    if form['rm_artist']:
-        scripts.delete_artist_from_user(form['rm_artist'], r.user)
-        return redirect(reverse('artists:favorite_artists'))
-
-    fav_artists = scripts.preferences_of_user(r.user)
-
-    return render(r, 'artists/favorite_artists.html', {'favorite_artists': fav_artists})
