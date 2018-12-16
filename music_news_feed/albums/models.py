@@ -20,6 +20,13 @@ class Albums(models.Model):
     artists = models.ManyToManyField(Artists)
     users = models.ManyToManyField(User, through='Updates', related_name='album_updates')
 
+    @classmethod
+    def get_or_none(cls, **kwargs):
+        try:
+            return cls.objects.get(**kwargs)
+        except Albums.DoesNotExist:
+            return None
+
 
 class Updates(models.Model):
     person = models.ForeignKey(User, on_delete=models.CASCADE)
