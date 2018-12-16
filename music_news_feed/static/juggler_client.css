@@ -1,0 +1,73 @@
+tr.OK {
+    background-color: #DDFFDD;
+}
+tr.WARN {
+    background-color: #FFFFBB;
+}
+tr.CRIT {
+    background-color: #ff7575;
+    /*background-color: #FF8383;*/
+}
+tr.INFO {
+    /* reserved for status "INFO" */
+}
+
+.filter {
+    margin: 5px;
+}
+
+p {
+    margin-bottom: 5px;
+}
+
+.badge-panel {
+    margin-top: 5px;
+    height:114px;
+    overflow-y: scroll;
+    border: 1px solid black;
+    border-radius: 5px;
+    border-color: grey;
+}
+
+.badge {
+    background-color: #A9A9A9;
+    margin: 2px;
+    font-size: 95%;
+}
+
+.radio_item {
+    display: none !important;
+}
+
+.label_item {
+    opacity: 0.5;
+}
+
+.radio_item:checked + label {
+    opacity: 1;
+}
+
+label {
+    cursor: pointer;
+}
+
+img {
+    cursor:pointer;
+}
+
+.cancel_button {
+    color:rgb(255,255,255);
+    cursor:pointer;
+}
+
+.plus_filter {
+    background-color: rgb(0, 204, 0);
+}
+
+.minus_filter {
+    background-color: rgb(255, 0, 0);
+}
+
+.table td {
+    vertical-align:middle;
+}

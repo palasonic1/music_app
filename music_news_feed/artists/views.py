@@ -1,3 +1,10 @@
-from django.shortcuts import render
+# -*- coding: utf-8 -*-
+from __future__ import unicode_literals
 
-# Create your views here.
+from django.conf import settings
+
+from django.shortcuts import render, render_to_response, redirect, reverse
+
+def index(r):
+    return render(r, 'artists/artists.html')
+

@@ -1,6 +1,19 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h2>Привет, {{ user.get_full_name }} <small>{{ user.username }}</small>!</h2>
+  <h1>Привет, {{ user.get_full_name }} <small>{{ user.username }}</small>!</h2>
   <p>Ваша дата рождения: {{ user.profile.birth_date }}</p>
+  <br>
+  <h4>Выберите раздел:</h4>
+      <ul>
+          <li>
+              <a href="{% url 'artists:index' %}">Исполнители</a>
+          </li>
+          <li>
+              <a href="/artists/index.html">Альбомы</a>
+          </li>
+          <li>
+              <a href="/artists/index.html">Треки</a>
+          </li>
+       </ul>
 {% endblock %}
