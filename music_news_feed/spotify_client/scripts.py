@@ -198,3 +198,10 @@ def delete_artist_from_user(artist_spotify_id, user):
             Updates.objects.filter(person=user, album=album).delete()
         except Exception:
             pass
+
+
+def preferences_of_user(user):
+    try:
+        return Preferences.objects.filter(person=user).values('name', 'img_url', 'spotify_id', 'genres')
+    except Exception:
+        return []
