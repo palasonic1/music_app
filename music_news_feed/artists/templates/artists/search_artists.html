@@ -9,6 +9,7 @@
       </div>
       <button type="submit" class="btn btn-primary">Поиск</button>
   </form>
+  {% if search_result %}
   <table id="search_artist_table" class="table table-hover" style="margin-top: 20px;">
       <thead>
           <colgroup>
@@ -26,7 +27,7 @@
       </thead>
       <tbody>
           {% for artist in search_result %}
- 	      <tr{% if artist.is_in_library %}style="background-color:lightgrey"{% endif %}>
+ 	      <tr{% if artist.is_in_library %} style="background-color:lightgrey"{% endif %}>
                  <td>
 	             {% if artist.img_url %}
  		     <img src="{{ artist.img_url }}" alt="{{ artist.name }}" style="width:90%; height: auto">
@@ -39,10 +40,11 @@
                      {{ artist.genres|join:", " }}
                  </td>
                  <td>
-		     <a href="{% url 'artists:search_artists' %}?artist_name={{ form.artist_name }}&add_artist={{ artist.spotify_id }}">{% if artist.is_in_library %}удалить{% else %}добавить{% endif %}</a>
+                     <a href="{% url 'artists:search_artists' %}?artist_name={{ form.artist_name }}&{% if artist.is_in_library %}rm{% else %}add{% endif %}_artist={{ artist.spotify_id }}">{% if artist.is_in_library %}удалить{% else %}добавить{% endif %}</a>
                  </td>
               </tr>
            {% endfor %}
        </tbody>
    </table>
+   {% endif %}
 {% endblock %}

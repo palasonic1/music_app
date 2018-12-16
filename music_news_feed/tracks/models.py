@@ -11,4 +11,4 @@ class Tracks(models.Model):
     disc_number = models.SmallIntegerField()
     duration_ms = models.IntegerField()
     spotify_id = models.CharField(max_length=64)
-    preview_url = models.URLField()
+

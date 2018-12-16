@@ -4,7 +4,7 @@ from django.db import models
 
 class Artists(models.Model):
     name = models.CharField(max_length=255)
-    img_url = models.URLField()
+    img_url = models.URLField(blank=True)
     spotify_id = models.CharField(max_length=64)
     genres = models.CharField(max_length=4096)
     users = models.ManyToManyField(User, through='Preferences', related_name='artists_preferences')

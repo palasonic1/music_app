@@ -3,8 +3,8 @@ from urllib.parse import urlencode, urljoin
 from urllib.request import Request, urlopen
 import requests
 import json
-from artists.models import Artists
-from albums.models import Albums, AlbumTypes
+from artists.models import Artists, Preferences
+from albums.models import Albums, AlbumTypes, Updates
 from tracks.models import Tracks
 
 CLIENT_ID = 'd0b4fdc35c2a4c13b34a489a4c1ad496'
@@ -31,7 +31,7 @@ def build_url(url):
 
 
 def best_image_url(images):
-    img_url = None
+    img_url = ''
     max_height = 0
     for image in images:
         if image['height'] > max_height:
@@ -61,7 +61,8 @@ def search_artist(user, query):
     for obj in resp_objects:
         is_in_library = False
         artist = Artists.get_or_none(spotify_id=obj['id'])
-        if artist and artist in user.artists_preferences.filter(status=True):
+        #if artist and artist in user.artists_preferences.filter(status=True):
+        if artist and artist in user.artists_preferences.filter(preferences__status=True):
             is_in_library = True
         answer.append({
             'name': obj['name'],
@@ -91,8 +92,7 @@ def track_info(track_obj):
         'track_number': track_obj['track_number'],
         'disc_number': track_obj['disc_number'],
         'duration_ms': track_obj['duration_ms'],
-        'spotify_id': track_obj['id'],
-        'preview_url': track_obj['preview_url']
+        'spotify_id': track_obj['id']
     }
 
 
@@ -141,7 +141,6 @@ def add_tracks_for_album(album, tracks):
             disc_number=track['disc_number'],
             duration_ms=track['duration_ms'],
             spotify_id=track['spotify_id'],
-            preview_url=track['preview_url']
         )
         for artist_sp_id in track['artists']:
             artist = Artists.get_or_none(spotify_id=artist_sp_id)
@@ -162,8 +161,9 @@ def add_albums_to_updates(user, artist, albums):
                 release_date=album['release_date']
             )
             add_tracks_for_album(album_obj, album['tracks'])
+
         album_obj.artists.add(artist)
-        user.album_updates.get_or_create(album=album_obj)
+        Updates.objects.get_or_create(person=user, album=album_obj)
 
 
 def add_artist_to_user(artist_spotify_id, user):
@@ -176,8 +176,9 @@ def add_artist_to_user(artist_spotify_id, user):
             spotify_id=info['spotify_id'],
             genres=info['genres']
         )
-        albums = get_artists_albums(info['spotify_id'])
-        add_albums_to_updates(user, artist, albums)
-    else:
-        user.album_updates.add(Albums.objects.filter(artists=artist))
-    user.artists_preferences.update_or_create(artist=artist, defaults={'status': True})
+
+    albums = get_artists_albums(artist_spotify_id)
+    add_albums_to_updates(user, artist, albums)
+
+    Preferences.objects.update_or_create(person=user, artist=artist, defaults={'status': True})
+
