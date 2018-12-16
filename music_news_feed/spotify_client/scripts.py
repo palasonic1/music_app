@@ -28,7 +28,7 @@ def build_url(url):
     return urljoin(BASE_URL, url)
 
 
-def search_artist(query):
+def search_artist(user, query):
     params = {
         'q': query,
         'type': 'artist',
@@ -43,12 +43,16 @@ def search_artist(query):
             if image['height'] > max_height:
                 img_url = image['url']
                 max_height = image['height']
+        is_in_library = False
+        artist = Artists.get_or_none(spotify_id=obj['id'])
+        if artist and artist in user.artists_preferences.all():
+            is_in_library = True
         answer.append({
             'name': obj['name'],
             'img_url': img_url,
             'genres': obj['genres'],
             'spotify_id': obj['id'],
-            'is_in_library': False if Artists.get_or_none(spotify_id=obj['id']) is None else True
+            'is_in_library': is_in_library
         })
     return answer
 
