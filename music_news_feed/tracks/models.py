@@ -5,7 +5,7 @@ from artists.models import Artists
 
 class Tracks(models.Model):
     name = models.CharField(max_length=255)
-    album = models.ForeignKey(Albums, on_delete=models.SET_NULL())
+    album = models.ForeignKey(Albums, on_delete=models.CASCADE)
     artists = models.ManyToManyField(Artists)
     track_number = models.SmallIntegerField()
     disc_number = models.SmallIntegerField()

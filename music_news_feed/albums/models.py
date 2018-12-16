@@ -1,6 +1,7 @@
 from django.db import models
 from enum import Enum
 from artists.models import Artists
+from django.contrib.auth.models import User
 
 
 class AlbumTypes(Enum):
@@ -17,3 +18,10 @@ class Albums(models.Model):
     img_url = models.URLField()
     release_date = models.DateField()
     artists = models.ManyToManyField(Artists)
+    users = models.ManyToManyField(User, through='Updates', related_name='album_updates')
+
+
+class Updates(models.Model):
+    person = models.ForeignKey(User, on_delete=models.CASCADE)
+    album = models.ForeignKey(Albums, on_delete=models.CASCADE)
+    status = models.BooleanField(default=False)

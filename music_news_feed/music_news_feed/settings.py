@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'index',
     'profiles',
     'artists',
+    'albums',
+    'spotify_client',
+    'tracks'
 ]
 
 MIDDLEWARE = [
