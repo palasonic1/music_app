@@ -202,6 +202,6 @@ def delete_artist_from_user(artist_spotify_id, user):
 
 def preferences_of_user(user):
     try:
-        return Preferences.objects.filter(person=user).values('name', 'img_url', 'spotify_id', 'genres')
+        return Preferences.objects.filter(person=user, status=True).values('artist__name', 'artist__img_url', 'artist__spotify_id', 'artist__genres')
     except Exception:
         return []
