@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Привет, {{ user.get_full_name }} <small>{{ user.username }}</small>!</h2>
+  <h1>Привет, {{ user.get_full_name }} <small>({{ user.username }})</small>!</h2>
   <p>Ваша дата рождения: {{ user.profile.birth_date }}</p>
   <br>
   <h4>Выберите раздел:</h4>
