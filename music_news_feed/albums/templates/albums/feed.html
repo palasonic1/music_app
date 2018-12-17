@@ -33,7 +33,7 @@
  		     <a href="{% url 'albums:tracks_of_album' %}?album={{ album.spotify_id }}">{{ album.name }}</a>
                  </td>
                  <td>
-                     {{ album.artists_name }}
+                     {{ album.artists_name|join:", " }}
                  </td>
                  <td>
                      {{ album.genres|join:", " }}

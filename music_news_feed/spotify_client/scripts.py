@@ -235,8 +235,17 @@ def feed_of_user(user):
     except Exception as ex:
         print(ex)
         return []
-    answer = []
+
+    albums_by_sp_id = {}
     for album in albums:
+        if album['album__spotify_id'] not in albums_by_sp_id:
+            albums_by_sp_id[album['album__spotify_id']] = album
+            albums_by_sp_id[album['album__spotify_id']]['album__artists__name'] = [album['album__artists__name']]
+        else:
+            albums_by_sp_id[album['album__spotify_id']]['album__artists__name'].append(album['album__artists__name'])
+        
+    answer = []
+    for album in albums_by_sp_id.values():
         answer.append({
             'status': album['status'],
             'name': album['album__name'],
@@ -253,16 +262,22 @@ def tracks_of_album(album_spotify_id):
     album = Albums.get_or_none(spotify_id=album_spotify_id)
     if album is None:
         return []
-    return {
+
+    result = {
         'name': album.name,
         'genres': json.loads(album.genres),
         'img_url': album.img_url,
         'release_date': album.release_date.strftime('%Y-%m-%d'),
-        'artists': list(album.artists.values('name')),
+        'artists': [artist['name'] for artist in album.artists.values('name')],
         'tracks': list(
-            Tracks.objects.filter(album=album).values('name', 'artists', 'track_number', 'disc_number', 'duration_ms')
+            Tracks.objects.filter(album=album).values('name', 'artists__name', 'track_number', 'disc_number', 'duration_ms')
         )
     }
+
+    for track in result['tracks']:
+        track['duration_ms'] = "%d:%d" % (track['duration_ms'] / 60000, (track['duration_ms'] % 60000) / 1000)
+
+    return result
 
 
 def change_updates_status(album_spotify_id, user):

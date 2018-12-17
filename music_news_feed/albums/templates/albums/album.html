@@ -1,15 +1,14 @@
 {% extends 'base.html' %}
 
 {% block content %}
-  <h1>Лента альбомов</h1>
-  <table id="feed_table" class="table table-hover" style="margin-top: 20px;">
-      <thead>
+  <h1>Альбом</h1>
+  <table id="album_table" class="table table-hover" style="margin-top: 20px;">
+      <thead style='display:none;'>
           <colgroup>
               <col style="width:12%;" />
               <col style="width:17%;" />
               <col style="width:17%;" />
               <col style="width:17%;" />
-	      <col style="width:17%;" />
 	      <col style="width:17%;" />
           </colgroup>
           <tr>
@@ -18,34 +17,63 @@
 	      <th>Исполнитель</th>
               <th>Жанры</th>
 	      <th>Дата релиза</th>
-              <th>Просмотрено</th>
           </tr>
       </thead>
       <tbody>
-          {% for album in feed %}
-              <tr{% if album.status %} style="background-color:lightgrey"{% endif %}>
-                 <td>
-	             {% if album.img_url %}
- 		     <img src="{{ album.img_url }}" alt="{{ album.name }}" style="width:90%; height: auto">
-		     {% endif %}
-                 </td>
-                 <td>
-                     {{ album.name }}
-                 </td>
-                 <td>
-                     {{ album.artists_name }}
-                 </td>
-                 <td>
-                     {{ album.genres|join:", " }}
-                 </td>
-                 <td>
-                     {{ album.release_date }}
-                 </td>
-                 <td>
-		     <a href="{% url 'albums:feed' %}?album_to_change={{ album.spotify_id }}">{% if album.status %}отметить как не прослушанное{% else %}отметить как прослушанное{% endif %}</a>
-                 </td>
-              </tr>
-           {% endfor %}
+          <tr>
+             <td>
+	         {% if album.img_url %}
+ 	         <img src="{{ album.img_url }}" alt="{{ album.name }}" style="width:90%; height: auto">
+	         {% endif %}
+             </td>
+             <td>
+                 {{ album.name }}
+             </td>
+             <td>
+                 {{ album.artists|join:", " }}
+             </td>
+             <td>
+                 {{ album.genres|join:", " }}
+             </td>
+             <td>
+                 {{ album.release_date }}
+             </td>
+           </tr>
+       </tbody>
+   </table>
+   <table id="tracks_table" class="table table-hover" style="margin-top: 20px;">
+      <thead>
+          <colgroup>
+              <col style="width:12%;" />
+              <col style="width:17%;" />
+              <col style="width:17%;" />
+              <col style="width:17%;" />
+              <col style="width:17%;" />
+          </colgroup>
+          <tr>
+              <th>#</th>
+              <th>Название</th>
+              <th>Исполнитель</th>
+              <th>Длительность</th>
+          </tr>
+      </thead>
+      <tbody>
+          {% for track in album.tracks %}
+          <tr>
+             <td>
+		 {{ track.track_number }}
+             </td>
+             <td>
+                 {{ track.name }}
+             </td>
+             <td>
+                 {{ album.artists|join:", " }}
+             </td>
+             <td>
+                 {{ track.duration_ms }}
+             </td>
+          </tr>
+          {% endfor %}
        </tbody>
    </table>
 {% endblock %}
